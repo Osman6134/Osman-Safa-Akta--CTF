@@ -1,32 +1,37 @@
 import requests
 import json
+import sys
+
+def sistem_kontrol():
+    # Adım 7: Auto Control Ability - İnternet ve API erişim testi
+    print("--- [Sistem Kontrolü Başlatılıyor] ---")
+    try:
+        requests.get("https://8.8.8.8", timeout=3)
+        print("✅ İnternet Bağlantısı: OK")
+        return True
+    except:
+        print("❌ Hata: İnternet bağlantısı yok!")
+        return False
 
 def ctf_verilerini_cek():
-    # CTFtime API üzerinden yaklaşan 5 etkinliği çekiyoruz
+    if not sistem_kontrol():
+        return
+
     url = "https://ctftime.org/api/v1/events/?limit=5"
-    
-    # Güvenlik ve tanınma için User-Agent ekliyoruz
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) OSOP-CTF-Tracker'
-    }
-    
-    print("--- [OSOP] CTF & Konferans Takip Sistemi Çalışıyor ---")
+    headers = {'User-Agent': 'Mozilla/5.0 OSOP-CTF-Tracker'}
     
     try:
         response = requests.get(url, headers=headers)
-        
-        # JSON-first Parsing: Hocanın istediği veri işleme yöntemi
+        # Adım 7: JSON-first Parsing
         if response.status_code == 200:
             events = response.json()
+            print(f"\n✅ Veri Çekme Başarılı: {len(events)} etkinlik bulundu.")
             for event in events:
-                print(f"\n📌 Etkinlik: {event['title']}")
-                print(f"📅 Başlangıç: {event['start']}")
-                print(f"🔗 Detay: {event['url']}")
+                print(f"📌 {event['title']} | {event['start']}")
         else:
-            print(f"⚠️ Veri çekilemedi. Hata kodu: {response.status_code}")
-            
+            print(f"⚠️ Sunucu Hatası: {response.status_code}")
     except Exception as e:
-        print(f"❌ Bir bağlantı hatası oluştu: {e}")
+        print(f"💥 Kritik Hata: {e}")
 
 if __name__ == "__main__":
     ctf_verilerini_cek()
