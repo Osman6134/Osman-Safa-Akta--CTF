@@ -1,0 +1,16 @@
+{
+  "projectName": "Osman-Safa-Akta--CTF",
+  "category": "Security Event Tracker",
+  "author": "Osman Safa Aktaş",
+  "version": "1.0.0",
+  "description": "CTFtime API kullanarak siber güvenlik yarışmalarını takip eden otomasyon aracı.",
+  "features": [
+    "Auto internet check",
+    "JSON-first parsing",
+    "Upcoming CTF listing"
+  ],
+  "requirements": {
+    "os": "macOS",
+    "language": "Python 3.10"
+  }
+}
